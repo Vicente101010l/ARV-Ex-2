@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercício 2</title>
+  <script src="lib/aframe.min.js"></script>
+  <script src="tv.js"></script>
+</head>
+<body>
+  <a-scene background="color: #050403" renderer="colorManagement: true" webxr="optionalFeatures: hand-tracking; requiredFeatures: local-floor" vr-mode-ui="enabled: true">
+    <a-assets>
+      <img id="rot-1" crossorigin="anonymous" src="img/rotulos/canal1.png">
+      <img id="rot-2" crossorigin="anonymous" src="img/rotulos/canal2.png">
+      <img id="rot-3" crossorigin="anonymous" src="img/rotulos/canal3.png">
+      <img id="rot-4" crossorigin="anonymous" src="img/rotulos/canal4.png">
+      <img id="rot-play" crossorigin="anonymous" src="img/rotulos/play.png">
+      <img id="rot-pausa" crossorigin="anonymous" src="img/rotulos/pausa.png">
+
+      <img class="canal" crossorigin="anonymous" src="img/alma.jpg"
+        data-titulo="ALMA, deserto do Atacama"
+        data-legenda="Rede de 66 antenas a cerca de 5000 m de altitude">
+      <img class="canal" crossorigin="anonymous" src="img/paranal.jpg"
+        data-titulo="Observatório do Paranal"
+        data-legenda="O laser amarelo cria uma estrela artificial a cerca de 90 km de altitude">
+      <img class="canal" crossorigin="anonymous" src="img/la-silla.jpg"
+        data-titulo="Observatório de La Silla"
+        data-legenda="O primeiro observatório da ESO no Chile, inaugurado em 1964">
+
+      <audio id="som-clique" src="audio/click.wav" crossorigin="anonymous" preload="auto"></audio>
+      <audio id="som-hover" src="audio/hover.wav" crossorigin="anonymous" preload="auto"></audio>
+      <audio id="som-estatica" src="audio/static.wav" crossorigin="anonymous" preload="auto"></audio>
+    </a-assets>
+
+    <a-entity id="rig">
+      <a-entity id="head" camera look-controls="pointerLockEnabled: false" wasd-controls="enabled: false" position="0 1.6 0" rotation="-12 0 0"
+        cursor="rayOrigin: mouse" raycaster="objects: .clickable; far: 6"></a-entity>
+      <a-entity id="leftHand" laser-controls="hand: left" raycaster="objects: .clickable; far: 6; lineColor: #ffb347; lineOpacity: 0.8"></a-entity>
+      <a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: .clickable; far: 6; lineColor: #ffb347; lineOpacity: 0.8"></a-entity>
+      <a-entity id="leftTracked" hand-tracking-controls="hand: left; modelColor: #d9b98c" hand-poke></a-entity>
+      <a-entity id="rightTracked" hand-tracking-controls="hand: right; modelColor: #d9b98c" hand-poke></a-entity>
+    </a-entity>
+
+    <a-light type="ambient" color="#3a2c20" intensity="1.1"></a-light>
+    <a-light type="point" color="#ffb870" intensity="1.6" distance="8" position="-1.8 2.3 -0.6"></a-light>
+    <a-light id="glow" type="point" color="#9fd0ff" intensity="0.35" distance="4" position="0 1.2 -1.6"></a-light>
+
+    <a-plane rotation="-90 0 0" width="8" height="8" position="0 0 -1.5" material="color: #1b1410; roughness: 1"></a-plane>
+    <a-circle rotation="-90 0 0" radius="1.6" position="0 0.005 -1.6" material="color: #4a1e18; roughness: 1"></a-circle>
+    <a-ring rotation="-90 0 0" radius-inner="1.25" radius-outer="1.35" position="0 0.007 -1.6" material="color: #c98a3c; roughness: 1"></a-ring>
+    <a-plane width="8" height="3.2" position="0 1.6 -3.6" material="color: #2a1d17; roughness: 1"></a-plane>
+    <a-plane width="8" height="3.2" position="-4 1.6 -1.5" rotation="0 90 0" material="color: #241913; roughness: 1"></a-plane>
+    <a-plane width="8" height="3.2" position="4 1.6 -1.5" rotation="0 -90 0" material="color: #241913; roughness: 1"></a-plane>
+
+    <a-box position="0 0.28 -2.25" width="2.1" height="0.56" depth="0.7" material="color: #3b2514; roughness: 0.8"></a-box>
+    <a-box position="0 0.57 -2.25" width="2.14" height="0.03" depth="0.74" material="color: #4a2f1a; roughness: 0.7"></a-box>
+
+    <a-entity position="0 0.585 -2.25">
+      <a-box position="0 0.55 0" width="1.95" height="1.1" depth="0.12" material="color: #2b1c10; roughness: 0.7"></a-box>
+      <a-box position="0 0.55 -0.45" width="1.6" height="0.95" depth="0.8" material="color: #1a120b; roughness: 0.9"></a-box>
+      <a-box position="0 0.55 0.058" width="1.78" height="1.02" depth="0.02" material="color: #0d0a07; roughness: 0.4; metalness: 0.2"></a-box>
+      <a-entity id="tv" crt-tv="width: 1.6; height: 0.9; semSinal: ESCOLHA UM CANAL; semSinalLegenda: Carregue num dos botões da mesa" position="0 0.55 0.07"></a-entity>
+      <a-cylinder position="-0.12 1.28 -0.3" radius="0.008" height="0.7" rotation="0 0 28" material="color: #aaa; metalness: 0.8; roughness: 0.3"></a-cylinder>
+      <a-cylinder position="0.12 1.28 -0.3" radius="0.008" height="0.7" rotation="0 0 -28" material="color: #aaa; metalness: 0.8; roughness: 0.3"></a-cylinder>
+      <a-cylinder position="0 1.12 -0.3" radius="0.06" height="0.04" material="color: #222; roughness: 0.5"></a-cylinder>
+    </a-entity>
+
+    <a-entity id="console" position="0 1.05 -0.75" rotation="35 0 0">
+      <a-box position="0 -0.02 0" width="0.98" height="0.04" depth="0.32" material="color: #2b1c10; roughness: 0.7"></a-box>
+      <a-entity tv-button="channel: 0" position="-0.39 0 0.02">
+        <a-box class="botao clickable" width="0.15" height="0.044" depth="0.1" position="0 0.022 0" material="color: #3a3632; roughness: 0.6; metalness: 0.2">
+          <a-plane class="rotulo" width="0.13" height="0.0975" rotation="-90 0 0" position="0 0.023 0" material="shader: flat; transparent: true; src: #rot-1; color: #e8dcc6"></a-plane>
+        </a-box>
+        <a-sphere class="luz" radius="0.011" position="0 0.008 -0.09" material="color: #2a1a0a; roughness: 0.3"></a-sphere>
+      </a-entity>
+      <a-entity tv-button="channel: 1" position="-0.195 0 0.02">
+        <a-box class="botao clickable" width="0.15" height="0.044" depth="0.1" position="0 0.022 0" material="color: #3a3632; roughness: 0.6; metalness: 0.2">
+          <a-plane class="rotulo" width="0.13" height="0.0975" rotation="-90 0 0" position="0 0.023 0" material="shader: flat; transparent: true; src: #rot-2; color: #e8dcc6"></a-plane>
+        </a-box>
+        <a-sphere class="luz" radius="0.011" position="0 0.008 -0.09" material="color: #2a1a0a; roughness: 0.3"></a-sphere>
+      </a-entity>
+      <a-entity tv-button="channel: 2" position="0 0 0.02">
+        <a-box class="botao clickable" width="0.15" height="0.044" depth="0.1" position="0 0.022 0" material="color: #3a3632; roughness: 0.6; metalness: 0.2">
+          <a-plane class="rotulo" width="0.13" height="0.0975" rotation="-90 0 0" position="0 0.023 0" material="shader: flat; transparent: true; src: #rot-3; color: #e8dcc6"></a-plane>
+        </a-box>
+        <a-sphere class="luz" radius="0.011" position="0 0.008 -0.09" material="color: #2a1a0a; roughness: 0.3"></a-sphere>
+      </a-entity>
+      <a-entity tv-button="channel: 3" position="0.195 0 0.02">
+        <a-box class="botao clickable" width="0.15" height="0.044" depth="0.1" position="0 0.022 0" material="color: #3a3632; roughness: 0.6; metalness: 0.2">
+          <a-plane class="rotulo" width="0.13" height="0.0975" rotation="-90 0 0" position="0 0.023 0" material="shader: flat; transparent: true; src: #rot-4; color: #e8dcc6"></a-plane>
+        </a-box>
+        <a-sphere class="luz" radius="0.011" position="0 0.008 -0.09" material="color: #2a1a0a; roughness: 0.3"></a-sphere>
+      </a-entity>
+      <a-entity tv-button="kind: play; playLabel: #rot-play; pauseLabel: #rot-pausa" position="0.39 0 0.02">
+        <a-box class="botao clickable" width="0.15" height="0.044" depth="0.1" position="0 0.022 0" material="color: #3a3632; roughness: 0.6; metalness: 0.2">
+          <a-plane class="rotulo" width="0.13" height="0.0975" rotation="-90 0 0" position="0 0.023 0" material="shader: flat; transparent: true; src: #rot-play; color: #e8dcc6"></a-plane>
+        </a-box>
+        <a-sphere class="luz" radius="0.011" position="0 0.008 -0.09" material="color: #2a1a0a; roughness: 0.3"></a-sphere>
+      </a-entity>
+    </a-entity>
+    <a-box position="-0.4 0.5 -0.8" width="0.05" height="1.0" depth="0.05" material="color: #2b1c10"></a-box>
+    <a-box position="0.4 0.5 -0.8" width="0.05" height="1.0" depth="0.05" material="color: #2b1c10"></a-box>
+  </a-scene>
+
+  <video class="canal" hidden src="video/panoramica.webm" loop muted playsinline preload="auto" crossorigin="anonymous"
+    data-titulo="Panorâmica do Paranal"
+    data-legenda="Movimento de câmara sobre a fotografia panorâmica"></video>
+</body>
+</html>
